@@ -9,10 +9,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "tdesign-vue-next": "^1.2.2",
     "vue": "^3.2.47"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.1.0",
+    "unplugin-auto-import": "^0.15.2",
+    "unplugin-vue-components": "^0.24.1",
     "vite": "^4.2.0",
     "vite-plugin-windicss": "^1.8.10",
     "windicss": "^3.5.6"
