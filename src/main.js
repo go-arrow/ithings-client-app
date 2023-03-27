@@ -8,6 +8,9 @@ import TDesign from 'tdesign-vue-next'
 import 'tdesign-vue-next/es/style/index.css'
 import './theme.css'
 
+import { createPinia } from 'pinia'
+
 createApp(App)
   .use(TDesign)
+  .use(createPinia())
   .mount('#app')
