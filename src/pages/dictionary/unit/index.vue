@@ -1,5 +1,7 @@
 <template>
-  <router-view />
+  <div>
+    <h1>数据单位</h1>
+  </div>
 </template>
 
 <script setup>

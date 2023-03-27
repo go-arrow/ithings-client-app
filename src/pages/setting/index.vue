@@ -1,5 +1,7 @@
 <template>
-  <router-view />
+  <div>
+    <h1>Setting</h1>
+  </div>
 </template>
 
 <script setup>
