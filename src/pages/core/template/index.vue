@@ -38,20 +38,20 @@
           </t-form>
         </t-col>
         <t-col :span="6" class="flex justify-end">
-          <t-button>新建模板</t-button>
+          <t-button @click="handleCreateTemplate">新建模板</t-button>
         </t-col>
       </t-row>
 
       <t-table class="border" row-key="index" :columns="columns" :data="data" :pagination="pagination" :hover="true">
         <template #op="{row}">
-        <div>
-          <t-link theme="primary" :underline="false" hover="color">详情</t-link>
-          <label class="px-2 text-gray-400">/</label>
-          <t-popconfirm content="确认删除吗">
-            <t-link theme="primary" :underline="false" hover="color">删除</t-link>
-          </t-popconfirm>
-        </div>
-      </template>
+          <div>
+            <t-link theme="primary" :underline="false" hover="color">详情</t-link>
+            <label class="px-2 text-gray-400">/</label>
+            <t-popconfirm content="确认删除吗">
+              <t-link theme="primary" :underline="false" hover="color">删除</t-link>
+            </t-popconfirm>
+          </div>
+        </template>
       </t-table>
     </t-card>
   </div>
@@ -60,6 +60,9 @@
 <script setup>
 import { ref } from 'vue'
 import { SearchIcon } from 'tdesign-icons-vue-next'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const form = ref(null)
 
@@ -91,6 +94,12 @@ for (let i = 0; i < total; i++) {
     name: ['智能井盖', 'WiFi探针采集器', '智能仪表', '环境监测设备'][i % 4],
     industry: ['智慧工业', '智慧城市', '能源电力', '其它行业'][i % 4],
     scene: ['气表制造', '智慧工业', '水务市政', '环境感知'][i % 4], 
+  })
+}
+
+const handleCreateTemplate = () => {
+  router.push({
+    name: 'templateCreate'
   })
 }
 

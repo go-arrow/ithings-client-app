@@ -11,7 +11,7 @@
         <t-breadcrumb class="mb-4">
           <template #default>
             <t-breadcrumbItem>首页</t-breadcrumbItem>
-            <t-breadcrumbItem>{{ route.meta.title }}</t-breadcrumbItem>
+            <t-breadcrumbItem>{{ route.meta.breadcrumb }}</t-breadcrumbItem>
           </template>
           <template #separator> > </template>
         </t-breadcrumb>

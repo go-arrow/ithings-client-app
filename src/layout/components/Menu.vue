@@ -1,5 +1,5 @@
 <template>
-  <t-menu theme="dark" default-value="Dashboard" :default-expanded="defaultExpanded" :value="route.name"
+  <t-menu theme="dark" default-value="Dashboard" :default-expanded="defaultExpanded" :value="route.meta.menu"
     :collapsed="setting.collapsed" @change="changeHandler">
 
     <template #logo>
@@ -7,38 +7,38 @@
       <img v-else height="28" src="@/assets/logo/logo-full.png" alt="logo" />
     </template>
 
-    <t-menu-item value="Dashboard">
+    <t-menu-item value="dashboard">
       <template #icon>
         <t-icon name="dashboard" />
       </template>
       仪表盘
     </t-menu-item>
 
-    <t-submenu value="Core">
+    <t-submenu value="core">
       <template #icon>
         <t-icon name="cloud-upload" />
       </template>
       <template #title>
         <span>数据管理</span>
       </template>
-      <t-menu-item value="Template"> 模板管理 </t-menu-item>
-      <t-menu-item value="Product"> 产品管理 </t-menu-item>
-      <t-menu-item value="Device"> 设备管理 </t-menu-item>
+      <t-menu-item value="template"> 模板管理 </t-menu-item>
+      <t-menu-item value="product"> 产品管理 </t-menu-item>
+      <t-menu-item value="device"> 设备管理 </t-menu-item>
     </t-submenu>
 
-    <t-submenu value="Dictionary">
+    <t-submenu value="dictionary">
       <template #icon>
         <t-icon name="view-module" />
       </template>
       <template #title>
         <span>字典管理</span>
       </template>
-      <t-menu-item value="Industry"> 行业类型 </t-menu-item>
-      <t-menu-item value="Scene"> 应用场景 </t-menu-item>
-      <t-menu-item value="Unit"> 数据单位 </t-menu-item>
+      <t-menu-item value="industry"> 行业类型 </t-menu-item>
+      <t-menu-item value="scene"> 应用场景 </t-menu-item>
+      <t-menu-item value="unit"> 数据单位 </t-menu-item>
     </t-submenu>
 
-    <t-menu-item value="Setting">
+    <t-menu-item value="setting">
       <template #icon>
         <t-icon name="setting" />
       </template>
@@ -56,14 +56,14 @@ const setting = useSettingStore()
 
 const defaultExpanded = ref([])
 
-onMounted(() => {
-  const p = route.path.split('/')[1]
-  const first = p.slice(0, 1).toUpperCase() + p.slice(1)
-  defaultExpanded.value.push(first)
-})
-
 const router = useRouter()
 const route = useRoute()
+
+onMounted(() => {
+  const p = route.path.split('/')[1]
+  // const first = p.slice(0, 1).toUpperCase() + p.slice(1)
+  defaultExpanded.value.push(p)
+})
 
 const changeHandler = (value) => {
   router.push({
