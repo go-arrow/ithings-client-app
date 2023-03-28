@@ -56,8 +56,9 @@
           <h1 class="font-bold text-[16px]">2. 模板功能</h1>
           <label class="text-gray-500 ml-1 leading-tight">(描述该模板属性信息情况)</label>
         </t-col>
+
         <t-col :span="6" class="flex justify-end">
-          <t-button>添加</t-button>
+          <t-button @click="add">添加</t-button>
         </t-col>
       </t-row>
 
@@ -102,11 +103,12 @@
           </div>
         </template>
       </t-table>
-
     </t-card>
 
+    <Panel ref="panel"/>
+
     <t-card class="fixed w-full bottom-0 -ml-4" shadow>
-      <t-button class="mr-5 ml-3">保存提交</t-button>
+      <t-button class="mr-3 ml-3">保存提交</t-button>
       <t-button theme="default">取消</t-button>
     </t-card>
   </div>
@@ -116,6 +118,7 @@
 import { ref } from 'vue'
 import { ArrowLeftIcon } from 'tdesign-icons-vue-next'
 import { useRouter } from 'vue-router'
+import Panel from './components/Panel.vue'
 
 const router = useRouter()
 
@@ -165,6 +168,12 @@ const serviceColumns = [
   { colKey: 'method', title: '调用方式	' },
   { colKey: 'op', title: '操作' },
 ]
+
+const panel = ref(null)
+
+const add = () => {
+  panel.value.show()
+}
 
 </script>
 
