@@ -6,7 +6,7 @@
       <div>
         <t-form ref="form" :rules="rules" :data="model" label-align="top">
           <t-form-item label="功能类型" name="type">
-            <t-select v-model="model.type">
+            <t-select v-model="model.type" placeholder="请选择功能类型">
               <t-option key="1" label="属性类型" value="property" />
               <t-option key="2" label="事件类型" value="event"/>
               <t-option key="3" label="服务类型" value="service" />
@@ -81,7 +81,8 @@ const ok = async () => {
 }
 
 const cancel = () => {
-
+  form.value.reset()
+  model.value.type = 'property'
 }
 
 const show = () => {
