@@ -10,7 +10,10 @@ const routes = [
       {
         path: '/dashboard',
         name: 'Dashboard',
-        component: () => import('@/pages/dashboard/index.vue')
+        component: () => import('@/pages/dashboard/index.vue'),
+        meta: {
+          title: '首页',
+        }
       },
       {
         path: '/core',
@@ -20,17 +23,26 @@ const routes = [
           {
             path: '/core/template',
             name: 'Template',
-            component: () => import('@/pages/core/template/index.vue')
+            component: () => import('@/pages/core/template/index.vue'),
+            meta: {
+              title: '模板管理',
+            }
           },
           {
             path: '/core/product',
             name: 'Product',
-            component: () => import('@/pages/core/product/index.vue')
+            component: () => import('@/pages/core/product/index.vue'),
+            meta: {
+              title: '产品管理',
+            }
           },
           {
             path: '/core/device',
             name: 'Device',
-            component: () => import('@/pages/core/device/index.vue')
+            component: () => import('@/pages/core/device/index.vue'),
+            meta: {
+              title: '设备管理',
+            }
           },
         ]
       },
@@ -42,24 +54,36 @@ const routes = [
           {
             path: '/dictionary/industry',
             name: 'Industry',
-            component: () => import('@/pages/dictionary/industry/index.vue')
+            component: () => import('@/pages/dictionary/industry/index.vue'),
+            meta: {
+              title: '行业类型',
+            }
           },
           {
             path: '/dictionary/scene',
             name: 'Scene',
-            component: () => import('@/pages/dictionary/scene/index.vue')
+            component: () => import('@/pages/dictionary/scene/index.vue'),
+            meta: {
+              title: '应用场景',
+            }
           },
           {
             path: '/dictionary/unit',
             name: 'Unit',
-            component: () => import('@/pages/dictionary/unit/index.vue')
+            component: () => import('@/pages/dictionary/unit/index.vue'),
+            meta: {
+              title: '数据单位',
+            }
           },
         ]
       },
       {
         path: '/setting',
         name: 'Setting',
-        component: () => import('@/pages/setting/index.vue')
+        component: () => import('@/pages/setting/index.vue'),
+        meta: {
+          title: '系统设置',
+        }
       }
     ]
   },
