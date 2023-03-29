@@ -46,14 +46,11 @@ import Property from './Property.vue'
 import Event from './Event.vue'
 import Service from './Service.vue'
 
+const emit = defineEmits(['create'])
+
 const form = ref(null)
 
-const model = ref({
-  type: 'property',
-  name: '',
-  identifier: '',
-  desc: ''
-})
+const visible = ref(false)
 
 const rules = {
   type: [
@@ -67,7 +64,14 @@ const rules = {
   ],
 }
 
-const visible = ref(false)
+const data = {
+  type: 'property',
+  name: '',
+  identifier: '',
+  desc: ''
+}
+
+const model = ref({...data})
 
 const ok = async () => {
   const result = await form.value.validate()
@@ -75,8 +79,10 @@ const ok = async () => {
     return
   }
 
-  visible.value = false
+  // 返回数据
+  emit('create', {...model.value})
 
+  visible.value = false
   form.value.reset()
 }
 
@@ -89,8 +95,14 @@ const show = () => {
   visible.value = true
 }
 
+const inject = (params) => {
+  model.value = {...params}
+  visible.value = true
+}
+
 defineExpose({
   show,
+  inject,
 })
 
 </script>

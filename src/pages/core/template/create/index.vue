@@ -59,6 +59,7 @@
 
         <t-col :span="6" class="flex justify-end">
           <t-button @click="add">添加</t-button>
+          <t-button @click="inject" theme="danger">注入</t-button>
         </t-col>
       </t-row>
 
@@ -105,7 +106,7 @@
       </t-table>
     </t-card>
 
-    <Panel ref="panel"/>
+    <Panel ref="panel" @create="create"/>
 
     <t-card class="fixed w-full bottom-0 -ml-4" shadow>
       <t-button class="mr-3 ml-3">保存提交</t-button>
@@ -171,8 +172,18 @@ const serviceColumns = [
 
 const panel = ref(null)
 
+const items = ref([])
+
 const add = () => {
   panel.value.show()
+}
+
+const create = (item) => {
+  items.value.push(item)
+}
+
+const inject = () => {
+  panel.value.inject(items.value[0])
 }
 
 </script>
