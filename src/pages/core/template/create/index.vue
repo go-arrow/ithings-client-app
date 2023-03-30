@@ -59,18 +59,18 @@
 
         <t-col :span="6" class="flex justify-end">
           <t-button @click="add">添加</t-button>
-          <t-button @click="inject" theme="danger">注入</t-button>
         </t-col>
       </t-row>
 
       <div class="mb-4">1.属性列表</div>
-      <t-table class="border" row-key="index" :columns="propertyColumns" :hover="true" size="small">
+      <t-table class="border" row-key="index" :columns="propertyColumns" :data="properties" :hover="true" size="small">
         <template #op="{row}">
           <div>
-            <t-link theme="primary" :underline="false" hover="color">查看</t-link>
-            <t-link theme="primary" :underline="false" hover="color">编辑</t-link>
+            <t-link theme="primary" :underline="false" hover="color" @click="queryProperty(row)">查看</t-link>
             <label class="px-2 text-gray-400">/</label>
-            <t-popconfirm content="确认删除吗">
+            <t-link theme="primary" :underline="false" hover="color" @click="editProperty(row)">编辑</t-link>
+            <label class="px-2 text-gray-400">/</label>
+            <t-popconfirm content="确认删除吗" @confirm="removeProperty(row)">
               <t-link theme="primary" :underline="false" hover="color">删除</t-link>
             </t-popconfirm>
           </div>
@@ -82,6 +82,7 @@
         <template #op="{row}">
           <div>
             <t-link theme="primary" :underline="false" hover="color">查看</t-link>
+            <label class="px-2 text-gray-400">/</label>
             <t-link theme="primary" :underline="false" hover="color">编辑</t-link>
             <label class="px-2 text-gray-400">/</label>
             <t-popconfirm content="确认删除吗">
@@ -96,6 +97,7 @@
         <template #op="{row}">
           <div>
             <t-link theme="primary" :underline="false" hover="color">查看</t-link>
+            <label class="px-2 text-gray-400">/</label>
             <t-link theme="primary" :underline="false" hover="color">编辑</t-link>
             <label class="px-2 text-gray-400">/</label>
             <t-popconfirm content="确认删除吗">
@@ -106,7 +108,15 @@
       </t-table>
     </t-card>
 
-    <Panel ref="panel" @create="create"/>
+    <t-dialog v-model:visible="visible" :header="header" :footer="false" theme="info" :on-close="close" width="650px">
+      <template #body>
+        <div class="overflow-y-auto h-80">
+          <pre>{{ content }}</pre>
+        </div>
+      </template>
+    </t-dialog>
+
+    <Panel ref="panel" @create="create" @update="update"/>
 
     <t-card class="fixed w-full bottom-0 -ml-4" shadow>
       <t-button class="mr-3 ml-3">保存提交</t-button>
@@ -149,11 +159,15 @@ const rules = {
 }
 
 const propertyColumns = [
-  { colKey: 'name', title: '功能名称' },
+{ colKey: 'name', title: '功能名称' },
   { colKey: 'identifier', title: '标识符' },
-  { colKey: 'type', title: '数据类型	' },
-  { colKey: 'accessMode', title: '读写类型		' },
-  { colKey: 'op', title: '操作' },
+  { colKey: 'dataType.type', title: '数据类型' },
+  {
+    colKey: 'accessMode', title: '读写类型', cell: (h, { row }) => {
+      return row.accessMode == 'r' ? '只读' : '读写'
+    }
+  },
+  { colKey: 'op', title: '操作', width: '300' },
 ]
 
 const eventColumns = [
@@ -172,18 +186,80 @@ const serviceColumns = [
 
 const panel = ref(null)
 
-const items = ref([])
+const properties = ref([])
+const events = ref([])
+const services = ref([])
 
 const add = () => {
-  panel.value.show()
+  panel.value.show(false, properties.value, events.value, services.value)
 }
 
 const create = (item) => {
-  items.value.push(item)
+  console.log('create -> ',item)
+
+  if (item.type == 'property') {
+    const data = {...item.item}
+    data['accessMode'] = data.dataType.accessMode
+    delete data.dataType['accessMode']
+    properties.value.push(data)
+  }
 }
 
-const inject = () => {
-  panel.value.inject(items.value[0])
+const update = (item) => {
+  console.log('update -> ',item)
+
+  if (item.type == 'property') {
+    let index = 0
+    properties.value.forEach((tmp, i) => {
+      if (item.identifier == tmp.identifier) {
+        index = i
+        return
+      }
+    })
+
+    const data = {...item.item}
+    data['accessMode'] = data.dataType.accessMode
+    delete data.dataType['accessMode']
+
+    properties.value.splice(index, 1, data)
+  }
+}
+
+const visible = ref(false)
+const header = ref('')
+const content = ref('')
+
+const close = () => {
+  visible.value = false
+}
+
+const queryProperty = (row) => {
+  visible.value = true
+  header.value = '物模型属性描述'
+  
+  properties.value.forEach(item => {
+    if (row.identifier == item.identifier) {
+      content.value = JSON.stringify(item, null, 4)
+      return
+    }
+  })
+}
+
+const editProperty = (row) => {
+  console.log(row);
+  panel.value.show(true, properties.value, events.value, services.value)
+  panel.value.inject('property', row)
+}
+
+const removeProperty = (row) => {
+  let index = 0
+  properties.value.forEach((item, i) => {
+    if (row.identifier == item.identifier) {
+      index = i
+      return
+    }
+  })
+  properties.value.splice(index, 1)
 }
 
 </script>

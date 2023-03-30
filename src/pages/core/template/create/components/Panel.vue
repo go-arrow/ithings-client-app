@@ -1,6 +1,6 @@
 <template>
   <div>
-    <t-drawer header="添加功能点" v-model:visible="visible" size="500" :closeOnOverlayClick="false" :destroyOnClose="true"
+    <t-drawer header="添加功能点" v-model:visible="visible" size="500" :closeOnOverlayClick="false"
       :on-confirm="ok" @close="cancel">
 
       <div>
@@ -21,11 +21,11 @@
             <t-input v-model="model.identifier" placeholder="请输入标识符"/>
           </t-form-item>
 
-          <Property v-if="model.type == 'property'" />
+          <Property ref="property" v-show="model.type == 'property'" />
 
-          <Event v-else-if="model.type == 'event'" />
+          <Event ref="event" v-show="model.type == 'event'" />
 
-          <Service v-else-if="model.type == 'service'" />
+          <Service ref="service" v-show="model.type == 'service'" />
 
           <t-form-item label="描述信息">
             <t-textarea
@@ -42,13 +42,21 @@
 
 <script setup>
 import { ref } from 'vue'
+import { MessagePlugin } from 'tdesign-vue-next'
+
 import Property from './Property.vue'
 import Event from './Event.vue'
 import Service from './Service.vue'
 
-const emit = defineEmits(['create'])
+const emit = defineEmits(['create', 'update'])
 
 const form = ref(null)
+
+const property = ref(null)
+
+const event = ref(null)
+
+const service = ref(null)
 
 const visible = ref(false)
 
@@ -74,29 +82,112 @@ const data = {
 const model = ref({...data})
 
 const ok = async () => {
+  // 校验表单
   const result = await form.value.validate()
   if (result !== true) {
     return
   }
 
-  // 返回数据
-  emit('create', {...model.value})
+  // 非编辑状态才去判断是否重复
+  if (!editStatus) {
+    if (model.value.type == 'property') {
+      let exist = false
+      properties.value.forEach(item => {
+        if (model.value.identifier == item.identifier) {
+          MessagePlugin.error({ content: `标识符名称'${model.value.identifier}'已存在` })
+          exist = true
+          return
+        }
+      })
+      if (exist) {
+        return
+      }
+    }
+  }
+
+  // 判断功能类型
+  if (model.value.type == 'property') {
+    const specs = await property.value.get()
+
+    if (specs == null) {
+      return
+    }
+
+    if (editStatus) {
+      emit('update', {
+        identifier: historyIdentifier,
+        type: model.value.type,
+        item: {
+          name: model.value.name,
+          identifier: model.value.identifier,
+          desc: model.value.desc,
+          dataType: {...specs}
+        }
+      })
+    } else {
+      emit('create', {
+        type: model.value.type,
+        item: {
+          name: model.value.name,
+          identifier: model.value.identifier,
+          desc: model.value.desc,
+          dataType: {...specs}
+        }
+      })
+    }
+  } else if (model.value.type == 'event') {
+
+  } else if (model.value.type == 'service') {
+
+  }
 
   visible.value = false
-  form.value.reset()
+  
+  form.value.clearValidate()
+  model.value = {...data}
+
+  property.value.reset()
 }
 
 const cancel = () => {
-  form.value.reset()
+  form.value.clearValidate()
+  model.value = {...data}
+  property.value.reset()
+
   model.value.type = 'property'
 }
 
-const show = () => {
+let editStatus = false
+const properties = ref([])
+const events = ref([])
+const services = ref([])
+
+const show = (status, p, e, s) => {
+  editStatus = status
+
+  properties.value = p
+  events.value = e
+  services.value = s
+
   visible.value = true
 }
 
-const inject = (params) => {
-  model.value = {...params}
+let historyIdentifier = null
+
+const inject = (type, params) => {
+  historyIdentifier = params.identifier
+
+  model.value = {
+    type: type,
+    name: params.name,
+    identifier: params.identifier,
+    desc: params.desc
+  }
+
+  if (type == 'property') {
+    property.value.inject({accessMode: params.accessMode, ...params.dataType})
+  }
+
   visible.value = true
 }
 

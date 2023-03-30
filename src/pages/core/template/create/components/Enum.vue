@@ -74,6 +74,61 @@ const remove = (i, id) => {
   delete model.value[`v${id}`]
 }
 
+const get = async () => {
+  if (items.value.length == 0) {
+    return null
+  }
+
+  const result = await form.value.validate()
+  if (result !== true) {
+    return null
+  }
+
+  return { ... model.value }
+}
+
+const inject = (params) => {
+  // 注入数据集合和规则集合
+  Object.keys(params).forEach(k => {
+    if (k.toString().startsWith('k')) {
+      const i = Number(k.toString().substring(1))
+
+      rules.value[`k${i}`] = [
+        { required: true, message: '请输入参数值', type: 'error', trigger: 'blur' },
+      ]
+
+      rules.value[`v${i}`] = [
+        { required: true, message: '请输入参数描述', type: 'error', trigger: 'blur' },
+      ]
+
+      items.value.push({ id: i, keyName: `k${i}`, valueName: `v${i}` })
+
+      // 全局的自增也要发生变化
+      global = i
+    }
+  })
+
+  // 注入表单数据
+  model.value = { ...params }
+
+  // 全局自增编号要编号
+  global += 1
+}
+
+const reset = () => {
+  form.value.clearValidate()
+  model.value = {...data}
+
+  items.value.splice(0, items.value.length)
+  rules.value = {}
+  global = 0
+}
+
+defineExpose({
+  get,
+  inject,
+  reset,
+})
 </script>
 
 <style scoped>

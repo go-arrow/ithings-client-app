@@ -32,6 +32,30 @@ const data = {
 }
 
 const model = ref({ ...data })
+
+const get = async () => {
+  const result = await form.value.validate()
+  if (result !== true) {
+    return null
+  }
+
+  return { ... model.value }
+}
+
+const inject = (params) => {
+  model.value = {...params}
+}
+
+const reset = () => {
+  form.value.clearValidate()
+  model.value = {...data}
+}
+
+defineExpose({
+  get,
+  inject,
+  reset,
+})
 </script>
 
 <style scoped>
