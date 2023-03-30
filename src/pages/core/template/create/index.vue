@@ -17,40 +17,36 @@
         </div>
 
         <t-form class="mb-4" ref="form" :rules="rules" :data="model">
-            <t-form-item label="行业类型" name="industry">
-              <t-select v-model="model.industry">
-                <t-option key="1" label="行业类型(全部)" value="1" />
-                <t-option key="2" label="智慧园区" value="2"/>
-                <t-option key="3" label="智慧工业" value="3" />
-                <t-option key="3" label="智慧水务" value="4" />
-                <t-option key="3" label="智慧城市" value="5" />
-              </t-select>
-            </t-form-item>
+          <t-form-item label="行业类型" name="industry">
+            <t-select v-model="model.industry">
+              <t-option key="1" label="行业类型(全部)" value="1" />
+              <t-option key="2" label="智慧园区" value="2" />
+              <t-option key="3" label="智慧工业" value="3" />
+              <t-option key="3" label="智慧水务" value="4" />
+              <t-option key="3" label="智慧城市" value="5" />
+            </t-select>
+          </t-form-item>
 
-            <t-form-item label="应用场景" name="scene">
-              <t-select v-model="model.scene">
-                <t-option key="1" label="应用场景(全部)" value="1" />
-                <t-option key="2" label="公共服务" value="2"/>
-                <t-option key="3" label="能源管理" value="3" />
-                <t-option key="4" label="气表制造" value="4" />
-                <t-option key="5" label="人工智能" value="5" />
-              </t-select>
-            </t-form-item>
+          <t-form-item label="应用场景" name="scene">
+            <t-select v-model="model.scene">
+              <t-option key="1" label="应用场景(全部)" value="1" />
+              <t-option key="2" label="公共服务" value="2" />
+              <t-option key="3" label="能源管理" value="3" />
+              <t-option key="4" label="气表制造" value="4" />
+              <t-option key="5" label="人工智能" value="5" />
+            </t-select>
+          </t-form-item>
 
-            <t-form-item label="模板名称" name="name">
-              <t-input v-model="model.search" placeholder="请输入模板名称" />
-            </t-form-item>
+          <t-form-item label="模板名称" name="name">
+            <t-input v-model="model.search" placeholder="请输入模板名称" />
+          </t-form-item>
 
-            <t-form-item label="模板描述">
-              <t-textarea
-                v-model="model.desc"
-                placeholder="请输入模板描述"
-                :autosize="{ minRows: 3, maxRows: 5 }"
-              />
-            </t-form-item>
-          </t-form>
+          <t-form-item label="模板描述">
+            <t-textarea v-model="model.desc" placeholder="请输入模板描述" :autosize="{ minRows: 3, maxRows: 5 }" />
+          </t-form-item>
+        </t-form>
       </div>
-      
+
       <t-row class="ml-3 mb-4 mt-8">
         <t-col :span="6" class="flex justify-start">
           <h1 class="font-bold text-[16px]">2. 模板功能</h1>
@@ -64,7 +60,7 @@
 
       <div class="mb-4">1.属性列表</div>
       <t-table class="border" row-key="index" :columns="propertyColumns" :data="properties" :hover="true" size="small">
-        <template #op="{row}">
+        <template #op="{ row }">
           <div>
             <t-link theme="primary" :underline="false" hover="color" @click="queryProperty(row)">查看</t-link>
             <label class="px-2 text-gray-400">/</label>
@@ -78,14 +74,14 @@
       </t-table>
 
       <div class="my-4">2.事件列表</div>
-      <t-table class="border" row-key="index" :columns="eventColumns" :hover="true" size="small">
-        <template #op="{row}">
+      <t-table class="border" row-key="index" :columns="eventColumns" :data="events" :hover="true" size="small">
+        <template #op="{ row }">
           <div>
-            <t-link theme="primary" :underline="false" hover="color">查看</t-link>
+            <t-link theme="primary" :underline="false" hover="color" @click="queryEvent(row)">查看</t-link>
             <label class="px-2 text-gray-400">/</label>
-            <t-link theme="primary" :underline="false" hover="color">编辑</t-link>
+            <t-link theme="primary" :underline="false" hover="color" @click="editEvent(row)">编辑</t-link>
             <label class="px-2 text-gray-400">/</label>
-            <t-popconfirm content="确认删除吗">
+            <t-popconfirm content="确认删除吗" @confirm="removeEvent(row)">
               <t-link theme="primary" :underline="false" hover="color">删除</t-link>
             </t-popconfirm>
           </div>
@@ -94,7 +90,7 @@
 
       <div class="my-4">3.服务列表</div>
       <t-table class="border mb-12" row-key="index" :columns="serviceColumns" :hover="true" size="small">
-        <template #op="{row}">
+        <template #op="{ row }">
           <div>
             <t-link theme="primary" :underline="false" hover="color">查看</t-link>
             <label class="px-2 text-gray-400">/</label>
@@ -116,7 +112,7 @@
       </template>
     </t-dialog>
 
-    <Panel ref="panel" @create="create" @update="update"/>
+    <Panel ref="panel" @create="create" @update="update" />
 
     <t-card class="fixed w-full bottom-0 -ml-4" shadow>
       <t-button class="mr-3 ml-3">保存提交</t-button>
@@ -159,7 +155,7 @@ const rules = {
 }
 
 const propertyColumns = [
-{ colKey: 'name', title: '功能名称' },
+  { colKey: 'name', title: '属性名称' },
   { colKey: 'identifier', title: '标识符' },
   { colKey: 'dataType.type', title: '数据类型' },
   {
@@ -171,14 +167,24 @@ const propertyColumns = [
 ]
 
 const eventColumns = [
-  { colKey: 'name', title: '功能名称' },
+  { colKey: 'name', title: '事件名称' },
   { colKey: 'identifier', title: '标识符' },
-  { colKey: 'type', title: '事件类型	' },
+  {
+    colKey: 'type', title: '事件类型', cell: (h, { row }) => {
+      if (row.type == 'info') {
+        return '信息'
+      } else if (row.type == 'warn') {
+        return '警告'
+      } else if (row.type == 'error') {
+        return '故障'
+      }
+    }
+  },
   { colKey: 'op', title: '操作' },
 ]
 
 const serviceColumns = [
-  { colKey: 'name', title: '功能名称' },
+  { colKey: 'name', title: '服务名称' },
   { colKey: 'identifier', title: '标识符' },
   { colKey: 'method', title: '调用方式	' },
   { colKey: 'op', title: '操作' },
@@ -195,18 +201,21 @@ const add = () => {
 }
 
 const create = (item) => {
-  console.log('create -> ',item)
+  console.log('create -> ', item)
 
   if (item.type == 'property') {
-    const data = {...item.item}
+    const data = { ...item.item }
     data['accessMode'] = data.dataType.accessMode
     delete data.dataType['accessMode']
     properties.value.push(data)
+  } else if (item.type == 'event') {
+    const data = { ...item.item }
+    events.value.push(data)
   }
 }
 
 const update = (item) => {
-  console.log('update -> ',item)
+  console.log('update -> ', item)
 
   if (item.type == 'property') {
     let index = 0
@@ -217,11 +226,21 @@ const update = (item) => {
       }
     })
 
-    const data = {...item.item}
+    const data = { ...item.item }
     data['accessMode'] = data.dataType.accessMode
     delete data.dataType['accessMode']
 
     properties.value.splice(index, 1, data)
+  } else if (item.type == 'event') {
+    let index = 0
+    events.value.forEach((tmp, i) => {
+      if (item.identifier == tmp.identifier) {
+        index = i
+        return
+      }
+    })
+    const data = { ...item.item }
+    events.value.splice(index, 1, data)
   }
 }
 
@@ -236,7 +255,7 @@ const close = () => {
 const queryProperty = (row) => {
   visible.value = true
   header.value = '物模型属性描述'
-  
+
   properties.value.forEach(item => {
     if (row.identifier == item.identifier) {
       content.value = JSON.stringify(item, null, 4)
@@ -246,7 +265,6 @@ const queryProperty = (row) => {
 }
 
 const editProperty = (row) => {
-  console.log(row);
   panel.value.show(true, properties.value, events.value, services.value)
   panel.value.inject('property', row)
 }
@@ -262,8 +280,34 @@ const removeProperty = (row) => {
   properties.value.splice(index, 1)
 }
 
+const queryEvent = (row) => {
+  visible.value = true
+  header.value = '物模型事件描述'
+
+  events.value.forEach(item => {
+    if (row.identifier == item.identifier) {
+      content.value = JSON.stringify(item, null, 4)
+      return
+    }
+  })
+}
+
+const editEvent = (row) => {
+  panel.value.show(true, properties.value, events.value, services.value)
+  panel.value.inject('event', row)
+}
+
+const removeEvent = (row) => {
+  let index = 0
+  events.value.forEach((item, i) => {
+    if (row.identifier == item.identifier) {
+      index = i
+      return
+    }
+  })
+  events.value.splice(index, 1)
+}
+
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

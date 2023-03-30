@@ -4,7 +4,7 @@
       <t-form-item label="数据类型" name="type">
         <t-select v-model="model.type" placeholder="请选择数据类型">
           <t-option key="1" label="int(整数型)" value="int" />
-          <t-option key="2" label="float(浮点型)" value="float"/>
+          <t-option key="2" label="float(浮点型)" value="float" />
           <t-option key="3" label="string(字符串)" value="string" />
           <t-option key="3" label="bool(布尔型)" value="bool" />
           <t-option key="3" label="enum(枚举型)" value="enum" />
@@ -15,16 +15,16 @@
 
       <Number ref="intField" v-show="model.type == 'int'" />
       <Number ref="floatField" v-show="model.type == 'float'" />
-      <String ref="stringField" v-show="model.type == 'string'"/>
-      <Bool ref="boolField" v-show="model.type == 'bool'"/>
-      <Enum ref="enumField" v-show="model.type == 'enum'"/>
+      <String ref="stringField" v-show="model.type == 'string'" />
+      <Bool ref="boolField" v-show="model.type == 'bool'" />
+      <Enum ref="enumField" v-show="model.type == 'enum'" />
       <Struct ref="structField" v-show="model.type == 'struct'" />
       <Array ref="arrayField" v-show="model.type == 'array'" />
 
       <t-form-item label="读写类型" name="mode">
         <t-select v-model="model.mode" placeholder="请选择读写类型">
           <t-option key="1" label="读写" value="rw" />
-          <t-option key="2" label="只读" value="r"/>
+          <t-option key="2" label="只读" value="r" />
         </t-select>
       </t-form-item>
     </t-form>
@@ -65,7 +65,7 @@ const data = {
   mode: 'rw',
 }
 
-const model = ref({...data})
+const model = ref({ ...data })
 
 const get = async () => {
   const result = await form.value.validate()
@@ -106,7 +106,7 @@ const get = async () => {
   return {
     type: model.value.type,
     accessMode: model.value.mode,
-    specs: {...specs},
+    specs: { ...specs },
   }
 }
 
@@ -115,25 +115,25 @@ const inject = (params) => {
   model.value.mode = params.accessMode
 
   if (params.type == 'int') {
-    intField.value.inject({...params.specs})
+    intField.value.inject({ ...params.specs })
   } else if (params.type == 'float') {
-    floatField.value.inject({...params.specs})
+    floatField.value.inject({ ...params.specs })
   } else if (params.type == 'string') {
-    stringField.value.inject({...params.specs})
+    stringField.value.inject({ ...params.specs })
   } else if (params.type == 'bool') {
-    boolField.value.inject({...params.specs})
+    boolField.value.inject({ ...params.specs })
   } else if (params.type == 'enum') {
-    enumField.value.inject({...params.specs})
+    enumField.value.inject({ ...params.specs })
   } else if (params.type == 'struct') {
-    structField.value.inject({...params.specs})
+    structField.value.inject({ ...params.specs })
   } else if (params.type == 'array') {
-    arrayField.value.inject({...params.specs})
+    arrayField.value.inject({ ...params.specs })
   }
 }
 
 const reset = () => {
   form.value.clearValidate()
-  model.value = {...data}
+  model.value = { ...data }
 
   intField.value.reset()
   floatField.value.reset()
@@ -142,8 +142,6 @@ const reset = () => {
   enumField.value.reset()
   structField.value.reset()
   arrayField.value.reset()
-
-  console.log('property reset...');
 }
 
 defineExpose({
@@ -154,6 +152,4 @@ defineExpose({
 
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

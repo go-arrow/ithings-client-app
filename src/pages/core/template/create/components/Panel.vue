@@ -1,24 +1,24 @@
 <template>
   <div>
-    <t-drawer header="添加功能点" v-model:visible="visible" size="500" :closeOnOverlayClick="false"
-      :on-confirm="ok" @close="cancel">
+    <t-drawer header="添加功能点" v-model:visible="visible" size="500" :closeOnOverlayClick="false" :on-confirm="ok"
+      @close="cancel">
 
       <div>
         <t-form ref="form" :rules="rules" :data="model" label-align="top">
           <t-form-item label="功能类型" name="type">
             <t-select v-model="model.type" placeholder="请选择功能类型">
               <t-option key="1" label="属性类型" value="property" />
-              <t-option key="2" label="事件类型" value="event"/>
+              <t-option key="2" label="事件类型" value="event" />
               <t-option key="3" label="服务类型" value="service" />
             </t-select>
           </t-form-item>
 
           <t-form-item label="功能名称" name="name">
-            <t-input v-model="model.name" placeholder="请输入功能名称"/>
+            <t-input v-model="model.name" placeholder="请输入功能名称" />
           </t-form-item>
 
           <t-form-item label="标识符" name="identifier">
-            <t-input v-model="model.identifier" placeholder="请输入标识符"/>
+            <t-input v-model="model.identifier" placeholder="请输入标识符" />
           </t-form-item>
 
           <Property ref="property" v-show="model.type == 'property'" />
@@ -28,11 +28,7 @@
           <Service ref="service" v-show="model.type == 'service'" />
 
           <t-form-item label="描述信息">
-            <t-textarea
-                v-model="model.desc"
-                placeholder="请输入描述信息"
-                :autosize="{ minRows: 3, maxRows: 5 }"
-              />
+            <t-textarea v-model="model.desc" placeholder="请输入描述信息" :autosize="{ minRows: 3, maxRows: 5 }" />
           </t-form-item>
         </t-form>
       </div>
@@ -79,7 +75,7 @@ const data = {
   desc: ''
 }
 
-const model = ref({...data})
+const model = ref({ ...data })
 
 const ok = async () => {
   // 校验表单
@@ -93,6 +89,18 @@ const ok = async () => {
     if (model.value.type == 'property') {
       let exist = false
       properties.value.forEach(item => {
+        if (model.value.identifier == item.identifier) {
+          MessagePlugin.error({ content: `标识符名称'${model.value.identifier}'已存在` })
+          exist = true
+          return
+        }
+      })
+      if (exist) {
+        return
+      }
+    } else if (model.value.type == 'event') {
+      let exist = false
+      events.value.forEach(item => {
         if (model.value.identifier == item.identifier) {
           MessagePlugin.error({ content: `标识符名称'${model.value.identifier}'已存在` })
           exist = true
@@ -116,45 +124,75 @@ const ok = async () => {
     if (editStatus) {
       emit('update', {
         identifier: historyIdentifier,
-        type: model.value.type,
+        type: 'property',
         item: {
           name: model.value.name,
           identifier: model.value.identifier,
           desc: model.value.desc,
-          dataType: {...specs}
+          dataType: { ...specs }
         }
       })
     } else {
       emit('create', {
-        type: model.value.type,
+        type: 'property',
         item: {
           name: model.value.name,
           identifier: model.value.identifier,
           desc: model.value.desc,
-          dataType: {...specs}
+          dataType: { ...specs }
         }
       })
     }
   } else if (model.value.type == 'event') {
-
+    const specs = event.value.get()
+    if (specs == null) {
+      return
+    }
+    if (editStatus) {
+      emit('update', {
+        identifier: historyIdentifier,
+        type: 'event',
+        item: {
+          name: model.value.name,
+          identifier: model.value.identifier,
+          type: specs.type,
+          desc: model.value.desc,
+          outputData: [...specs.outputData]
+        }
+      })
+    } else {
+      emit('create', {
+        type: 'event',
+        item: {
+          name: model.value.name,
+          identifier: model.value.identifier,
+          type: specs.type,
+          desc: model.value.desc,
+          outputData: [...specs.outputData]
+        }
+      })
+    }
   } else if (model.value.type == 'service') {
 
   }
 
   visible.value = false
-  
+
   form.value.clearValidate()
-  model.value = {...data}
+  model.value = { ...data }
 
   property.value.reset()
+  event.value.reset()
 }
 
 const cancel = () => {
   form.value.clearValidate()
-  model.value = {...data}
-  property.value.reset()
+  model.value = { ...data }
 
-  model.value.type = 'property'
+  property.value.reset()
+  event.value.reset()
+
+  model.value = { ...data }
 }
 
 let editStatus = false
@@ -185,7 +223,12 @@ const inject = (type, params) => {
   }
 
   if (type == 'property') {
-    property.value.inject({accessMode: params.accessMode, ...params.dataType})
+    property.value.inject({ accessMode: params.accessMode, ...params.dataType })
+  } else if (type == 'event') {
+    event.value.inject({
+      type: params.type,
+      outputData: [...params.outputData]
+    })
   }
 
   visible.value = true
@@ -198,6 +241,4 @@ defineExpose({
 
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

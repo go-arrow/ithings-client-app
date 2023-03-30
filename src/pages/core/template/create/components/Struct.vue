@@ -25,21 +25,22 @@
       <span class="text-sm">添加参数</span>
     </t-link>
 
-    <t-drawer header="添加参数" v-model:visible="visible" size="450" :closeOnOverlayClick="false" :on-confirm="ok" @close="cancel">
+    <t-drawer header="添加参数" v-model:visible="visible" size="450" :closeOnOverlayClick="false" :on-confirm="ok"
+      @close="cancel">
       <div>
         <t-form ref="form" :rules="rules" :data="model" label-align="top" class="mb-4">
           <t-form-item label="参数名称" name="name">
-            <t-input v-model="model.name" placeholder="请输入参数名称"/>
+            <t-input v-model="model.name" placeholder="请输入参数名称" />
           </t-form-item>
 
           <t-form-item label="标识符" name="identifier">
-            <t-input v-model="model.identifier" placeholder="请输入标识符"/>
+            <t-input v-model="model.identifier" placeholder="请输入标识符" />
           </t-form-item>
 
           <t-form-item label="数据类型" name="type">
             <t-select v-model="model.type" placeholder="请选择数据类型">
               <t-option key="1" label="int(整数型)" value="int" />
-              <t-option key="2" label="float(浮点型)" value="float"/>
+              <t-option key="2" label="float(浮点型)" value="float" />
               <t-option key="3" label="string(字符串)" value="string" />
               <t-option key="3" label="bool(布尔型)" value="bool" />
               <t-option key="3" label="enum(枚举型)" value="enum" />
@@ -49,9 +50,9 @@
 
         <Number ref="intField" v-show="model.type == 'int'" />
         <Number ref="floatField" v-show="model.type == 'float'" />
-        <String ref="stringField" v-show="model.type == 'string'"/>
-        <Bool ref="boolField" v-show="model.type == 'bool'"/>
-        <Enum ref="enumField" v-show="model.type == 'enum'"/>
+        <String ref="stringField" v-show="model.type == 'string'" />
+        <Bool ref="boolField" v-show="model.type == 'bool'" />
+        <Enum ref="enumField" v-show="model.type == 'enum'" />
       </div>
     </t-drawer>
   </div>
@@ -93,7 +94,7 @@ const data = {
   type: 'int',
 }
 
-const model = ref({...data})
+const model = ref({ ...data })
 
 const visible = ref(false)
 
@@ -122,7 +123,7 @@ const edit = (i) => {
 
   const t = model.value.type
   const specs = obj.dataType.specs
-  console.log(specs);
+
   if (t == 'int') {
     intField.value.inject(specs)
   } else if (t == 'float') {
@@ -143,7 +144,7 @@ const remove = (i) => {
 const ok = async () => {
   const result = await form.value.validate()
   if (result !== true) {
-    return 
+    return
   }
 
   // 非编辑状态才去判断是否重复
@@ -176,7 +177,7 @@ const ok = async () => {
   }
 
   if (specs == null) {
-    return 
+    return
   }
 
   const item = {
@@ -184,7 +185,7 @@ const ok = async () => {
     name: model.value.name,
     dataType: {
       type: model.value.type,
-      specs: {...specs}
+      specs: { ...specs }
     }
   }
 
@@ -197,8 +198,12 @@ const ok = async () => {
     items.value.push(item)
   }
 
+  cancel()
+}
+
+const cancel = () => {
   form.value.clearValidate()
-  model.value = {...data}
+  model.value = { ...data }
 
   intField.value.reset()
   floatField.value.reset()
@@ -207,17 +212,6 @@ const ok = async () => {
   enumField.value.reset()
 
   visible.value = false
-}
-
-const cancel = () => {
-  form.value.clearValidate()
-  model.value = {...data}
-
-  intField.value.reset()
-  floatField.value.reset()
-  stringField.value.reset()
-  boolField.value.reset()
-  enumField.value.reset()
 }
 
 const get = () => {
@@ -229,14 +223,14 @@ const get = () => {
 }
 
 const inject = (params) => {
-  for(let i = 0; i < params.length; i++) {
-    items.value.push({...params[i]})
+  for (let i = 0; i < params.length; i++) {
+    items.value.push({ ...params[i] })
   }
 }
 
 const reset = () => {
   form.value.clearValidate()
-  model.value = {...data}
+  model.value = { ...data }
 
   intField.value.reset()
   floatField.value.reset()
