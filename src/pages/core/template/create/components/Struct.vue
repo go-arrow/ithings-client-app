@@ -232,6 +232,8 @@ const reset = () => {
   form.value.clearValidate()
   model.value = { ...data }
 
+  items.value.splice(0, items.value.length)
+
   intField.value.reset()
   floatField.value.reset()
   stringField.value.reset()

@@ -132,26 +132,51 @@ const ok = async () => {
   }
 
   if (editStatus) {
-    emit('update', {
-      identifier: historyIdentifier,
-      item: {
+    if (model.value.type == 'struct') {
+      emit('update', {
+        identifier: historyIdentifier,
+        item: {
+          name: model.value.name,
+          identifier: model.value.identifier,
+          dataType: {
+            type: model.value.type,
+            specs: [...specs]
+          }
+        }
+      })
+    } else {
+      emit('update', {
+        identifier: historyIdentifier,
+        item: {
+          name: model.value.name,
+          identifier: model.value.identifier,
+          dataType: {
+            type: model.value.type,
+            specs: { ...specs }
+          }
+        }
+      })
+    }
+  } else {
+    if (model.value.type == 'struct') {
+      emit('create', {
+        name: model.value.name,
+        identifier: model.value.identifier,
+        dataType: {
+          type: model.value.type,
+          specs: [...specs]
+        }
+      })
+    } else {
+      emit('create', {
         name: model.value.name,
         identifier: model.value.identifier,
         dataType: {
           type: model.value.type,
           specs: { ...specs }
         }
-      }
-    })
-  } else {
-    emit('create', {
-      name: model.value.name,
-      identifier: model.value.identifier,
-      dataType: {
-        type: model.value.type,
-        specs: { ...specs }
-      }
-    })
+      })
+    }
   }
 
   cancel()
@@ -206,7 +231,7 @@ const inject = (params) => {
   } else if (params.dataType.type == 'enum') {
     enumField.value.inject({ ...params.dataType.specs })
   } else if (params.dataType.type == 'struct') {
-    structField.value.inject({ ...params.dataType.specs })
+    structField.value.inject([...params.dataType.specs])
   } else if (params.dataType.type == 'array') {
     arrayField.value.inject({ ...params.dataType.specs })
   }

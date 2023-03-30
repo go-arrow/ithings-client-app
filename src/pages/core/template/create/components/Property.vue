@@ -125,7 +125,7 @@ const inject = (params) => {
   } else if (params.type == 'enum') {
     enumField.value.inject({ ...params.specs })
   } else if (params.type == 'struct') {
-    structField.value.inject({ ...params.specs })
+    structField.value.inject([...params.specs])
   } else if (params.type == 'array') {
     arrayField.value.inject({ ...params.specs })
   }

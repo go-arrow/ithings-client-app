@@ -4,7 +4,7 @@
       <t-form-item label="元素类型" name="type">
         <t-select v-model="model.type" placeholder="请选择元素类型">
           <t-option key="1" label="int(整数型)" value="int" />
-          <t-option key="2" label="float(浮点型)" value="float"/>
+          <t-option key="2" label="float(浮点型)" value="float" />
           <t-option key="3" label="string(字符串)" value="string" />
           <t-option key="3" label="bool(布尔型)" value="bool" />
           <t-option key="3" label="enum(枚举型)" value="enum" />
@@ -19,9 +19,9 @@
 
     <Number ref="intField" v-show="model.type == 'int'" />
     <Number ref="floatField" v-show="model.type == 'float'" />
-    <String ref="stringField" v-show="model.type == 'string'"/>
-    <Bool ref="boolField" v-show="model.type == 'bool'"/>
-    <Enum ref="enumField" v-show="model.type == 'enum'"/>
+    <String ref="stringField" v-show="model.type == 'string'" />
+    <Bool ref="boolField" v-show="model.type == 'bool'" />
+    <Enum ref="enumField" v-show="model.type == 'enum'" />
     <Struct ref="structField" v-show="model.type == 'struct'" />
 
   </div>
@@ -59,7 +59,7 @@ const data = {
   size: '',
 }
 
-const model = ref({...data})
+const model = ref({ ...data })
 
 const get = async () => {
   const result = await form.value.validate()
@@ -101,7 +101,7 @@ const get = async () => {
     size: model.value.size,
     item: {
       type: model.value.type,
-      specs: {...specs},
+      specs: { ...specs },
     }
   }
 }
@@ -124,13 +124,13 @@ const inject = (params) => {
   } else if (t == 'enum') {
     enumField.value.inject(params.item.specs)
   } else if (t == 'struct') {
-    stringField.value.inject(params.item.specs)
+    structField.value.inject(params.item.specs)
   }
 }
 
 const reset = () => {
   form.value.clearValidate()
-  model.value = {...data}
+  model.value = { ...data }
 
   intField.value.reset()
   floatField.value.reset()
@@ -148,6 +148,4 @@ defineExpose({
 
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
