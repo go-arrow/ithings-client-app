@@ -86,8 +86,9 @@ const ok = async () => {
 
   // 非编辑状态才去判断是否重复
   if (!editStatus) {
+    let exist = false
+
     if (model.value.type == 'property') {
-      let exist = false
       properties.value.forEach(item => {
         if (model.value.identifier == item.identifier) {
           MessagePlugin.error({ content: `标识符名称'${model.value.identifier}'已存在` })
@@ -95,11 +96,7 @@ const ok = async () => {
           return
         }
       })
-      if (exist) {
-        return
-      }
     } else if (model.value.type == 'event') {
-      let exist = false
       events.value.forEach(item => {
         if (model.value.identifier == item.identifier) {
           MessagePlugin.error({ content: `标识符名称'${model.value.identifier}'已存在` })
@@ -107,9 +104,18 @@ const ok = async () => {
           return
         }
       })
-      if (exist) {
-        return
-      }
+    } else if (model.value.type == 'service') {
+      services.value.forEach(item => {
+        if (model.value.identifier == item.identifier) {
+          MessagePlugin.error({ content: `标识符名称'${model.value.identifier}'已存在` })
+          exist = true
+          return
+        }
+      })
+    }
+
+    if (exist) {
+      return
     }
   }
 
@@ -145,9 +151,11 @@ const ok = async () => {
     }
   } else if (model.value.type == 'event') {
     const specs = event.value.get()
+
     if (specs == null) {
       return
     }
+
     if (editStatus) {
       emit('update', {
         identifier: historyIdentifier,
@@ -173,16 +181,41 @@ const ok = async () => {
       })
     }
   } else if (model.value.type == 'service') {
+    const specs = service.value.get()
 
+    if (specs == null) {
+      return
+    }
+
+    if (editStatus) {
+      emit('update', {
+        identifier: historyIdentifier,
+        type: 'service',
+        item: {
+          name: model.value.name,
+          identifier: model.value.identifier,
+          callType: specs.callType,
+          desc: model.value.desc,
+          inputData: [...specs.inputData],
+          outputData: [...specs.outputData]
+        }
+      })
+    } else {
+      emit('create', {
+        type: 'service',
+        item: {
+          name: model.value.name,
+          identifier: model.value.identifier,
+          callType: specs.callType,
+          desc: model.value.desc,
+          inputData: [...specs.inputData],
+          outputData: [...specs.outputData]
+        }
+      })
+    }
   }
 
-  visible.value = false
-
-  form.value.clearValidate()
-  model.value = { ...data }
-
-  property.value.reset()
-  event.value.reset()
+  cancel()
 }
 
 const cancel = () => {
@@ -191,8 +224,9 @@ const cancel = () => {
 
   property.value.reset()
   event.value.reset()
+  service.value.reset()
 
-  model.value = { ...data }
+  visible.value = false
 }
 
 let editStatus = false
@@ -227,6 +261,12 @@ const inject = (type, params) => {
   } else if (type == 'event') {
     event.value.inject({
       type: params.type,
+      outputData: [...params.outputData]
+    })
+  } else if (type == 'service') {
+    service.value.inject({
+      callType: params.callType,
+      inputData: [...params.inputData],
       outputData: [...params.outputData]
     })
   }

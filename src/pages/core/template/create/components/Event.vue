@@ -35,7 +35,7 @@
       <span class="text-sm">添加参数</span>
     </t-link>
 
-    <Parameter ref="parameter" @create="create" @update="update" />
+    <Parameter title="添加事件输出参数" ref="parameter" @create="create" @update="update" />
   </div>
 </template>
 

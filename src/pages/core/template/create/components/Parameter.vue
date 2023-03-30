@@ -1,6 +1,6 @@
 <template>
   <div>
-    <t-drawer header="添加参数" v-model:visible="visible" size="470" :closeOnOverlayClick="false" :on-confirm="ok"
+    <t-drawer :header="title" v-model:visible="visible" size="470" :closeOnOverlayClick="false" :on-confirm="ok"
       @close="cancel">
       <div>
         <t-form ref="form" :rules="rules" :data="model" label-align="top" class="mb-4">
@@ -38,7 +38,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, toRefs } from 'vue'
 import { MessagePlugin } from 'tdesign-vue-next'
 
 import Number from './Number.vue'
@@ -47,6 +47,12 @@ import Bool from './Bool.vue'
 import Enum from './Enum.vue'
 import Struct from './Struct.vue'
 import Array from './Array.vue'
+
+const props = defineProps({
+  title: String,
+})
+
+const { title } = toRefs(props)
 
 const emit = defineEmits(['create', 'update'])
 

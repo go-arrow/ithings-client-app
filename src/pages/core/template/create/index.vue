@@ -89,14 +89,14 @@
       </t-table>
 
       <div class="my-4">3.服务列表</div>
-      <t-table class="border mb-12" row-key="index" :columns="serviceColumns" :hover="true" size="small">
+      <t-table class="border mb-12" row-key="index" :columns="serviceColumns" :data="services" :hover="true" size="small">
         <template #op="{ row }">
           <div>
-            <t-link theme="primary" :underline="false" hover="color">查看</t-link>
+            <t-link theme="primary" :underline="false" hover="color" @click="queryService(row)">查看</t-link>
             <label class="px-2 text-gray-400">/</label>
-            <t-link theme="primary" :underline="false" hover="color">编辑</t-link>
+            <t-link theme="primary" :underline="false" hover="color" @click="editService(row)">编辑</t-link>
             <label class="px-2 text-gray-400">/</label>
-            <t-popconfirm content="确认删除吗">
+            <t-popconfirm content="确认删除吗" @confirm="removeService(row)">
               <t-link theme="primary" :underline="false" hover="color">删除</t-link>
             </t-popconfirm>
           </div>
@@ -186,7 +186,15 @@ const eventColumns = [
 const serviceColumns = [
   { colKey: 'name', title: '服务名称' },
   { colKey: 'identifier', title: '标识符' },
-  { colKey: 'method', title: '调用方式	' },
+  {
+    colKey: 'callType', title: '调用方式', cell: (h, { row }) => {
+      if (row.callType == 'sync') {
+        return '同步'
+      } else {
+        return '异步'
+      }
+    }
+  },
   { colKey: 'op', title: '操作' },
 ]
 
@@ -211,6 +219,9 @@ const create = (item) => {
   } else if (item.type == 'event') {
     const data = { ...item.item }
     events.value.push(data)
+  } else if (item.type == 'service') {
+    const data = { ...item.item }
+    services.value.push(data)
   }
 }
 
@@ -241,16 +252,26 @@ const update = (item) => {
     })
     const data = { ...item.item }
     events.value.splice(index, 1, data)
+  } else if (item.type == 'service') {
+    let index = 0
+    services.value.forEach((tmp, i) => {
+      if (item.identifier == tmp.identifier) {
+        index = i
+        return
+      }
+    })
+    const data = { ...item.item }
+    services.value.splice(index, 1, data)
   }
+}
+
+const close = () => {
+  visible.value = false
 }
 
 const visible = ref(false)
 const header = ref('')
 const content = ref('')
-
-const close = () => {
-  visible.value = false
-}
 
 const queryProperty = (row) => {
   visible.value = true
@@ -306,6 +327,34 @@ const removeEvent = (row) => {
     }
   })
   events.value.splice(index, 1)
+}
+
+const queryService = (row) => {
+  visible.value = true
+  header.value = '物模型服务描述'
+
+  services.value.forEach(item => {
+    if (row.identifier == item.identifier) {
+      content.value = JSON.stringify(item, null, 4)
+      return
+    }
+  })
+}
+
+const editService = (row) => {
+  panel.value.show(true, properties.value, events.value, services.value)
+  panel.value.inject('service', row)
+}
+
+const removeService = (row) => {
+  let index = 0
+  services.value.forEach((item, i) => {
+    if (row.identifier == item.identifier) {
+      index = i
+      return
+    }
+  })
+  services.value.splice(index, 1)
 }
 
 </script>

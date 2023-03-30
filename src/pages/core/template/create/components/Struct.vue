@@ -25,7 +25,7 @@
       <span class="text-sm">添加参数</span>
     </t-link>
 
-    <t-drawer header="添加参数" v-model:visible="visible" size="450" :closeOnOverlayClick="false" :on-confirm="ok"
+    <t-drawer header="添加结构体参数" v-model:visible="visible" size="450" :closeOnOverlayClick="false" :on-confirm="ok"
       @close="cancel">
       <div>
         <t-form ref="form" :rules="rules" :data="model" label-align="top" class="mb-4">
