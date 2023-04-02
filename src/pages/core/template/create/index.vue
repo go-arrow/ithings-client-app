@@ -50,7 +50,7 @@
       <t-row class="ml-3 mb-4 mt-8">
         <t-col :span="6" class="flex justify-start">
           <h1 class="font-bold text-[16px]">2. 模板功能</h1>
-          <label class="text-gray-500 ml-1 leading-tight">(描述该模板属性信息情况)</label>
+          <label class="text-gray-500 ml-1 leading-tight">(描述该模板属性/事件/服务信息情况)</label>
         </t-col>
 
         <t-col :span="6" class="flex justify-end">
@@ -123,7 +123,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { ArrowLeftIcon } from 'tdesign-icons-vue-next'
+import { ArrowLeftIcon, HelpCircleIcon } from 'tdesign-icons-vue-next'
 import { useRouter } from 'vue-router'
 import Panel from './components/Panel.vue'
 
