@@ -44,6 +44,7 @@
         </div>
       </div>
 
+      <div class="border border-dashed my-6 -mx-6"></div>
       <!-- <t-alert class="mb-4 rounded"
         message="模板库提供已发布的标准物模版查看功能，开发者可在页面查看各行业/场景下的品类物模版功能定义信息，同时可提交新品类物模版申请，通过审核的物模版将会在平台上正式发布。" /> -->
 

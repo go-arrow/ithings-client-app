@@ -46,12 +46,26 @@ const routes = [
           },
           {
             path: '/core/product',
-            name: 'product',
-            component: () => import('@/pages/core/product/index.vue'),
-            meta: {
-              breadcrumb: '产品管理',
-              menu: 'product',
-            },
+            children: [
+              {
+                path: '', // 默认子路由
+                name: 'product',
+                component: () => import('@/pages/core/product/index.vue'),
+                meta: {
+                  breadcrumb: '产品管理',
+                  menu: 'product',
+                },
+              },
+              {
+                path: '/core/product/create',
+                name: 'productDetail',
+                component: () => import('@/pages/core/product/detail/index.vue'),
+                meta: {
+                  breadcrumb: '产品详情',
+                  menu: 'product',
+                },
+              }
+            ],
           },
           {
             path: '/core/device',

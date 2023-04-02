@@ -1,12 +1,10 @@
 <template>
   <div>
     <t-card :bordered="false">
-      <div class="flex justify-start align-baseline">
-        <t-link :underline="false" hover="color" @click="back">
-          <arrow-left-icon slot="prefix-icon" size="26px"></arrow-left-icon>
-        </t-link>
-        <label class="text-xl font-bold ml-2">创建模板</label>
-      </div>
+      <t-link :underline="false" hover="color" @click="back">
+        <arrow-left-icon slot="prefix-icon" size="26px"></arrow-left-icon>
+        <span class="text-xl font-bold ml-2">创建模板</span>
+      </t-link>
 
       <div class="border border-dashed mt-3 -mx-6"></div>
 
@@ -123,7 +121,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { ArrowLeftIcon, HelpCircleIcon } from 'tdesign-icons-vue-next'
+import { ArrowLeftIcon } from 'tdesign-icons-vue-next'
 import { useRouter } from 'vue-router'
 import Panel from './components/Panel.vue'
 

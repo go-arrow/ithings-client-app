@@ -16,7 +16,7 @@
               <t-option key="2" label="产品厂商" value="2" />
               <t-option key="3" label="产品型号" value="3" />
             </t-select>
-            <t-input v-model="model.search" placeholder="请输入搜索条件" class="-mx-1">
+            <t-input v-model="model.search" placeholder="  请输入搜索条件" class="-mx-1">
               <template #suffix-icon>
                 <search-icon class="cursor-pointer" />
               </template>
@@ -29,7 +29,7 @@
       <t-table class="border" row-key="index" :columns="columns" :data="data" :pagination="pagination" :hover="true">
         <template #op="{ row }">
           <div>
-            <t-link theme="primary" :underline="false" hover="color">详情</t-link>
+            <t-link theme="primary" :underline="false" hover="color" @click="handleDetail(row)">详情</t-link>
             <label class="px-2 text-gray-400">/</label>
             <t-popconfirm content="确认删除吗">
               <t-link theme="primary" :underline="false" hover="color">删除</t-link>
@@ -45,6 +45,8 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
 import { SearchIcon } from 'tdesign-icons-vue-next'
 import Panel from './components/Panel.vue'
 
@@ -84,7 +86,7 @@ for (let i = 0; i < total; i++) {
     industry: ['智慧工业', '智慧城市', '能源电力', '其它行业'][i % 4],
     scene: ['气表制造', '智慧工业', '水务市政', '环境感知'][i % 4],
     nodeType: ['直连设备', '网关设备', '网关子设备'][i % 3],
-    linkProtocol: ['HTTP', 'MQTT', 'LwM2M', 'CoAP', 'TCP'][i % 5],
+    accessProtocol: ['HTTP', 'MQTT', 'LwM2M', 'CoAP', 'TCP'][i % 5],
     dataFormat: ['PlainText', 'Binary', 'JSON', 'Modbus', '其它'][i % 5],
     deviceNum: ['2', '10', '0', '1', '4'][i % 5],
     createAt: ['2022-01-12', '2023-11-22', '2022-08-07', '2023-04-02'][i % 4],
@@ -95,6 +97,14 @@ const panel = ref(null)
 
 const add = () => {
   panel.value.show()
+}
+
+const router = useRouter()
+
+const handleDetail = (row) => {
+  router.push({
+    name: 'productDetail'
+  })
 }
 </script>
 
