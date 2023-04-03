@@ -9,8 +9,8 @@
       <div class="border border-dashed mt-3 -mx-6"></div>
 
       <div class="mt-5">
-        <div class="flex justify-start ml-3 mb-4">
-          <h1 class="font-bold text-[16px]">1. 基本信息</h1>
+        <div class="flex justify-start mb-4">
+          <h1 class="font-bold text-[16px]">物模板基本信息</h1>
           <label class="text-gray-500 ml-1 leading-tight">(描述该模板基本信息情况)</label>
         </div>
 
@@ -47,7 +47,7 @@
 
       <t-row class="ml-3 mb-4 mt-8">
         <t-col :span="6" class="flex justify-start">
-          <h1 class="font-bold text-[16px]">2. 模板功能</h1>
+          <h1 class="font-bold text-[16px]">物模板功能</h1>
           <label class="text-gray-500 ml-1 leading-tight">(描述该模板属性/事件/服务信息情况)</label>
         </t-col>
 
@@ -56,7 +56,7 @@
         </t-col>
       </t-row>
 
-      <div class="mb-4">1.属性列表</div>
+      <div class="mb-4">属性列表</div>
       <t-table class="border" row-key="index" :columns="propertyColumns" :data="properties" :hover="true" size="small">
         <template #op="{ row }">
           <div>
@@ -71,7 +71,7 @@
         </template>
       </t-table>
 
-      <div class="my-4">2.事件列表</div>
+      <div class="my-4">事件列表</div>
       <t-table class="border" row-key="index" :columns="eventColumns" :data="events" :hover="true" size="small">
         <template #op="{ row }">
           <div>
@@ -86,7 +86,7 @@
         </template>
       </t-table>
 
-      <div class="my-4">3.服务列表</div>
+      <div class="my-4">服务列表</div>
       <t-table class="border mb-12" row-key="index" :columns="serviceColumns" :data="services" :hover="true" size="small">
         <template #op="{ row }">
           <div>

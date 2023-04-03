@@ -23,6 +23,14 @@
               <t-option key="5" label="人工智能" value="5" />
             </t-select>
           </t-form-item>
+
+          <t-form-item label="模板名称">
+            <t-input v-model="model.search" placeholder="请输入模板名称">
+              <template #suffix-icon>
+                <search-icon class="cursor-pointer" />
+              </template>
+            </t-input>
+          </t-form-item>
         </t-form>
       </div>
 
@@ -33,20 +41,15 @@
           </div>
         </template>
       </t-table>
-      <t-pagination class="-mx-16 mt-4" :total="30"
-        theme="simple"
-        :totalContent="false"
-        showPreviousAndNextBtn
-        :showPageSize="false"
-        :showPageNumber="false"
-        showJumper
-        showFirstAndLastPageBtn />
+      <t-pagination class="-mx-16 mt-4" :total="30" theme="simple" :totalContent="false" showPreviousAndNextBtn
+        :showPageSize="false" :showPageNumber="false" showJumper showFirstAndLastPageBtn />
     </t-drawer>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import { SearchIcon } from 'tdesign-icons-vue-next'
 
 const form = ref(null)
 
@@ -64,6 +67,7 @@ const rules = {
 const data = {
   industry: '1',
   scene: '',
+  search: '',
 }
 
 const model = ref({ ...data })

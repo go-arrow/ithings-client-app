@@ -3,7 +3,7 @@
     <t-card :bordered="false">
       <div class="mb-4">
         <span class="text-xl font-bold">模板管理</span>
-        <span class="text-[14px] text-gray-400">(系统使用流程说明)</span>
+        <span class="text-[14px] text-gray-400">(系统核心流程指南)</span>
       </div>
 
       <div class="flex mb-4">
@@ -44,9 +44,7 @@
         </div>
       </div>
 
-      <div class="border border-dashed my-6 -mx-6"></div>
-      <!-- <t-alert class="mb-4 rounded"
-        message="模板库提供已发布的标准物模版查看功能，开发者可在页面查看各行业/场景下的品类物模版功能定义信息，同时可提交新品类物模版申请，通过审核的物模版将会在平台上正式发布。" /> -->
+      <div class="border border-dashed my-4 -mx-6"></div>
 
       <div class="flex justify-between">
         <t-form class="mb-4" ref="form" :data="model" layout="inline" label-width="0">

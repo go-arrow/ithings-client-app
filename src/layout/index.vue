@@ -35,9 +35,18 @@ const route = useRoute()
 </script>
 
 <style>
-.t-table__header > tr {
+.t-table__header {
+  font-size: 13px;
+}
+
+.t-table__header>tr {
   background-color: #f0f4f8;
 }
+
+.t-table__header>tr>th {
+  padding: 9px 16px;
+}
+
 .t-table__th-cell-inner {
   color: #0b1d30;
   font-weight: bolder;
