@@ -16,7 +16,7 @@
               <t-option key="2" label="产品厂商" value="2" />
               <t-option key="3" label="产品型号" value="3" />
             </t-select>
-            <t-input v-model="model.search" placeholder="  请输入搜索条件" class="-mx-1">
+            <t-input v-model="model.search" placeholder=" 请输入搜索条件" class="-mx-1">
               <template #suffix-icon>
                 <search-icon class="cursor-pointer" />
               </template>

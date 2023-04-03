@@ -9,6 +9,12 @@
             <t-input v-model="model.name" placeholder="请输入产品名称" />
           </t-form-item>
 
+          <label class="title">物模板</label>
+          <div class="flex justify-between bg-light-blue-50 px-3 py-2 my-1 text-[14px] justify-items-center">
+            <div class="leading-loose">尚未选择物模板</div>
+            <t-link theme="primary" :underline="false" hover="color" @click="chooseCategory">选择产品物模板</t-link>
+          </div>
+
           <t-form-item label="节点类型" name="nodeType">
             <t-select v-model="model.nodeType" placeholder="请选择节点类型">
               <t-option key="1" label="直连设备" value="1" />
@@ -58,11 +64,14 @@
         </t-form>
       </div>
     </t-drawer>
+
+    <Category ref="category" />
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import Category from './Category.vue'
 
 const form = ref(null)
 
@@ -99,6 +108,12 @@ const data = {
 
 const model = ref({ ...data })
 
+const category = ref(null)
+
+const chooseCategory = () => {
+  category.value.show()
+}
+
 const ok = async () => {
   visible.value = false
 }
@@ -117,4 +132,14 @@ defineExpose({
 
 </script>
 
-<style scoped></style>
+<style scoped>
+.title {
+  color: #000000E6;
+}
+
+label.title::before {
+  content: '*';
+  color: #d54941;
+  margin-right: 4px;
+}
+</style>
