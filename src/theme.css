@@ -166,11 +166,11 @@
   --td-text-color-link: var(--td-brand-color);
   /* end 字体配置 */
   /* 圆角配置 */
-  --td-radius-small: 0px;
-  --td-radius-default: 0px;
-  --td-radius-medium: 0px;
-  --td-radius-large: 0px;
-  --td-radius-extraLarge: 0px;
+  --td-radius-small: 1px;
+  --td-radius-default: 2px;
+  --td-radius-medium: 4px;
+  --td-radius-large: 6px;
+  --td-radius-extraLarge: 8px;
   --td-radius-round: 999px;
   --td-radius-circle: 50%;
   /* end 圆角配置 */

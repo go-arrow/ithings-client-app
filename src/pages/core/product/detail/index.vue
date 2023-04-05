@@ -69,7 +69,7 @@
           <Topic />
         </t-tab-panel>
         <t-tab-panel :value="3" label="数据解析">
-          <Script />
+          <Parse />
         </t-tab-panel>
       </t-tabs>
     </div>
@@ -81,7 +81,7 @@ import { useRouter } from 'vue-router'
 import { ArrowLeftIcon } from 'tdesign-icons-vue-next'
 import Topic from './components/Topic.vue'
 import Feature from './components/Feature.vue'
-import Script from './components/Script.vue'
+import Parse from './components/Parse.vue'
 
 const router = useRouter()
 

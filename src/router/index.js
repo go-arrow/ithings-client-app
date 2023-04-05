@@ -69,12 +69,26 @@ const routes = [
           },
           {
             path: '/core/device',
-            name: 'device',
-            component: () => import('@/pages/core/device/index.vue'),
-            meta: {
-              breadcrumb: '设备管理',
-              menu: 'device',
-            },
+            children: [
+              {
+                path: '', // 默认子路由
+                name: 'device',
+                component: () => import('@/pages/core/device/index.vue'),
+                meta: {
+                  breadcrumb: '设备管理',
+                  menu: 'device',
+                },
+              },
+              {
+                path: '/core/device/create',
+                name: 'deviceDetail',
+                component: () => import('@/pages/core/device/detail/index.vue'),
+                meta: {
+                  breadcrumb: '设备详情',
+                  menu: 'device',
+                },
+              }
+            ],
           },
         ]
       },
